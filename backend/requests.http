@@ -1,0 +1,141 @@
+@baseUrl = http://localhost:4000
+@token = REPLACE_WITH_DELCOM_BEARER_TOKEN
+@songId = 1
+@playlistId = 1
+@searchHistoryId = 1
+
+### Health check (public)
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+### Get all songs with lyrics (public)
+GET {{baseUrl}}/api/songs
+Accept: application/json
+
+### Get a song with lyrics (public)
+GET {{baseUrl}}/api/songs/{{songId}}
+Accept: application/json
+
+### Get verified current user
+GET {{baseUrl}}/api/me
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List favorites
+GET {{baseUrl}}/api/favorites
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Add favorite
+PUT {{baseUrl}}/api/favorites/{{songId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Remove favorite
+DELETE {{baseUrl}}/api/favorites/{{songId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List playlists
+GET {{baseUrl}}/api/playlists
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Create playlist
+POST {{baseUrl}}/api/playlists
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Favorit santai"
+}
+
+### Rename playlist
+PATCH {{baseUrl}}/api/playlists/{{playlistId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Favorit pagi"
+}
+
+### Delete playlist
+DELETE {{baseUrl}}/api/playlists/{{playlistId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Add a song to playlist
+POST {{baseUrl}}/api/playlists/{{playlistId}}/songs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "songId": {{songId}}
+}
+
+### Remove a song from playlist
+DELETE {{baseUrl}}/api/playlists/{{playlistId}}/songs/{{songId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get recent plays
+GET {{baseUrl}}/api/recent
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Record recent play (keeps five newest)
+POST {{baseUrl}}/api/recent
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "songId": {{songId}}
+}
+
+### Increment play count
+POST {{baseUrl}}/api/stats/play
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "songId": {{songId}}
+}
+
+### Get play statistics
+GET {{baseUrl}}/api/stats
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get search history
+GET {{baseUrl}}/api/search-history
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Add a search term (deduplicated, keeps eight newest)
+POST {{baseUrl}}/api/search-history
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "term": "Nada Senja"
+}
+
+### Delete one search-history entry
+DELETE {{baseUrl}}/api/search-history/{{searchHistoryId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Clear all search-history entries
+DELETE {{baseUrl}}/api/search-history
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Rejected: client must never provide user_id
+POST {{baseUrl}}/api/search-history
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "term": "ignored",
+  "user_id": 123
+}
